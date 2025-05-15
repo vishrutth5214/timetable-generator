@@ -1,60 +1,42 @@
-from tabulate import tabulate
 import random
-fac_sub={}
-n=int(input('enter no of subject:'))
+
+fac_sub = {}
+n = int(input('Enter number of subjects: '))
 for i in range(n):
-  print("_______________")
-  print("subject",i+1, "info")
-  sub=input("sub: ")
-  list1=[]
-  name=input("name")
-  fac_sub[sub]=name
-print(fac_sub)
-cpd=int(input("enter no of classes per day:"))
-timetable=[]
-days=['monday', 'tues', 'wed', 'thur', 'fri', 'sat']
-#inpuyt em classes ani subjects=list(fac_sub.keys())
-day=0
-tabl=['day']
-i=0
-for i in range(n):
-  tabl.append(i+1)
-print(tabl)
-table=[[],[],[],[],[],[]]
-subjects=list(fac_sub.values())
-for i in range(n):
-    tabl.append(i+1)
-table=[[],[],[],[],[],[]]
-table[0]=tabl
-while(len(timetable)<6):
-    timetable.append([])
-    while(len(timetable[day])!=cpd):
-        index=random.randint(0, len(subjects)-1)
-        while(subjects[index] not in timetable[day]):
-            timetable[day].append(subjects[index])
-    day+=1
-print(timetable)
-j=0
-dradict={}
-for i in days:
-  print(i)
-  print(j)
-  dradict[i]=timetable[j]
-  j+=1
-print(dradict)
-  
-a=list(dradict.keys())
-b=list(dradict.values())
-cname=['days']
-d=[]
-for i in range(cpd):
- cname.append((i+1))
-for i in a:
-  c=[]
-  c.append(i)
-  for i in dradict[i]:
-    c.append(i)
-  d.append(c)
-print(d)
-print(cname)
-print(tabulate(d,headers=cname, tablefmt="grid"))
+    print("_______________")
+    print("Subject", i + 1, "info")
+    sub = input("Subject name: ")
+    name = input("Faculty name: ")
+    fac_sub[sub] = name  # Store subject and corresponding faculty
+
+cpd = int(input("Enter number of classes per day: "))
+days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
+subjects = list(fac_sub.keys())  # Extract subject names (keys) for timetable
+
+# Generate timetable
+timetable = []
+for _ in range(6):
+    daily = []
+    while len(daily) < cpd:
+        subject = random.choice(subjects)
+        if subject not in daily:
+            daily.append(subject)
+    timetable.append(daily)
+
+# Map timetable to days
+day_subject_map = dict(zip(days, timetable))
+
+
+header = ['Day'] + [f'Class {i+1}' for i in range(cpd)]
+
+
+col_width = 15  # Adjust as needed
+print("-" * (col_width * (cpd + 1)))
+print("".join(h.ljust(col_width) for h in header))
+print("-" * (col_width * (cpd + 1)))
+
+
+for day in days:
+    row = [day] + day_subject_map[day]
+    print("".join(str(item).ljust(col_width) for item in row))
+print("-" * (col_width * (cpd + 1)))
