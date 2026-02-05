@@ -1,7 +1,15 @@
 import random
 
+
+def read_positive_int(prompt: str) -> int:
+    value = int(input(prompt))
+    if value <= 0:
+        raise ValueError("Value must be a positive integer.")
+    return value
+
+
 fac_sub = {}
-n = int(input('Enter number of subjects: '))
+n = read_positive_int('Enter number of subjects: ')
 for i in range(n):
     print("_______________")
     print("Subject", i + 1, "info")
@@ -9,11 +17,18 @@ for i in range(n):
     name = input("Faculty name: ")
     fac_sub[sub] = name  # Store subject and corresponding faculty
 
-cpd = int(input("Enter number of classes per day: "))
+cpd = read_positive_int("Enter number of classes per day: ")
 days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
 subjects = list(fac_sub.keys())  # Extract subject names (keys) for timetable
 
+if cpd > len(subjects):
+    raise ValueError(
+        "Classes per day cannot exceed the number of unique subjects; "
+        "this would make timetable generation impossible."
+    )
+
 # Generate timetable
+
 timetable = []
 for _ in range(6):
     daily = []
