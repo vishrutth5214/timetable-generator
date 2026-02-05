@@ -337,9 +337,15 @@ class TimetableHandler(BaseHTTPRequestHandler):
 
 
 def run_server(port: int = 5000) -> None:
+    """Run the timetable web server until interrupted."""
     server = HTTPServer(("0.0.0.0", port), TimetableHandler)
     print(f"Timetable planner running on http://localhost:{port}")
-    server.serve_forever()
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        print("\nShutting down server...")
+    finally:
+        server.server_close()
 
 
 if __name__ == "__main__":
